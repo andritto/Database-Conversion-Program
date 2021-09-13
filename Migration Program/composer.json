@@ -1,0 +1,6 @@
+{
+    "require": {
+        "illuminate/database": "^8.49",
+        "nesbot/carbon": "^2.50"
+    }
+}
