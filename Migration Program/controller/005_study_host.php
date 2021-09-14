@@ -1,8 +1,10 @@
 <?php
-$exchanges = Exchange::all(); //get all data from user table
+$exchanges = Transfers::all(); //get all data from Transfer table
 
 foreach ($exchanges as $exchange) {
-    $studentAddress = ForeignAddress::where('studentid','=',$student->personalid)->first();
+    $student = Student::where('student_id','=',$exchange->studentid)->first();
+    $application = Application::where('student_id','=',$student->student_id)->first();
+    $studentAddress = ForeignAddress::where('studentid','=',$student->student_id)->first();
     $newStudentAddress = new Address([
     'street' => $studentAddress->foreign_street == null ? "" : $studentAddress->foreign_street,
     'zipcode' => $studentAddress->foreign_zip == null ? 0 : $studentAddress->foreign_zip,
@@ -11,7 +13,7 @@ foreach ($exchanges as $exchange) {
     'country_id' => Country::where('name', '=', $studentAddress->foreign_country)->first()->country_id,
     'phone_no' => $studentAddress->foreign_phone == null ? "" : $studentAddress->foreign_phone,
     'additional' => null,
-    'student_id' => $student->personalid]); 
+    'student_id' => $student->student_id]); 
     $newStudentAddress->save();
     $newExchange = new Exchange([
     'application_id'=> $application->application_id,

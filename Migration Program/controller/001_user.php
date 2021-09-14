@@ -17,5 +17,3 @@ foreach ($users as $user) {
     $newUser->save();
 }
 
-
-//var_dump(User::all()->toArray());

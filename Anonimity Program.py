@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 # In[160]:
@@ -18,11 +18,24 @@ import pycountry_convert as pc
 
 import numpy as np
 
+# Live DB config
+oldDb_username = 'root'
+oldDb_password = 'root'
+oldDb_host     = '127.0.0.1'
+oldDb_port     = '8889'
+oldDb_database = 'StudDB 2.0'
+
+# Archive DB config
+arcDb_username = 'root'
+arcDb_password = 'root'
+arcDb_host     = '127.0.0.1'
+arcDb_port     = '8889'
+arcDb_database = 'archivDb'
 
 # In[161]:
 
 
-sqlEngine = create_engine('mysql+pymysql://root:root@127.0.0.1:8889/StudDB 2.0', pool_recycle=3600)
+sqlEngine = create_engine('mysql+pymysql://' + oldDb_username + ':' + oldDb_password + '@' + oldDb_host + ':' + oldDb_port + '/' + oldDb_database, pool_recycle=3600)
 
 dbConnection = sqlEngine.connect()
 
@@ -129,7 +142,7 @@ LEFT JOIN `course` AS `host_course`
   ON `host_course`.`course_id` = `study_host`.`foreign_course_id`
 
 
-JOIN `exchange_period`
+LEFT JOIN `exchange_period`
   ON `exchange_period`.`period_id` = `application`.`exchange_period_id`
 
 WHERE
@@ -143,10 +156,10 @@ frame = pd.read_sql(query, dbConnection);
 cols = ['student_firstname','student_lastname','abroad_mat_no']
 for col in cols:
     frame[col] = hashCol(frame[col])
-frame['nationality'] = mapCountry(frame['nationality'])    
+frame['nationality'] = mapCountry(frame['nationality'])
 frame['exchange_semester_start'] =  pd.to_datetime(frame['exchange_semester_start'], format='%Y-%m-%d')
 frame['exchange_semester_end'] =  pd.to_datetime(frame['exchange_semester_end'], format='%Y-%m-%d')
-frame['study_time_months'] = ((frame['exchange_semester_end'] - frame['exchange_semester_start'])/np.timedelta64(1, 'M')).astype(int)
+frame['study_time_months'] = (frame['exchange_semester_end'] - frame['exchange_semester_start']).dt.days/30.4
 frame = frame.drop(['exchange_semester_start', 'exchange_semester_end'], axis=1)
 frame.head(10)
 
@@ -160,7 +173,7 @@ dbConnection.close()
 # In[167]:
 
 
-sqlEngine = create_engine('mysql+pymysql://root:root@127.0.0.1:8889/archivDB', pool_recycle=3600)
+sqlEngine = create_engine('mysql+pymysql://' + arcDb_username + ':' + arcDb_password + '@' + arcDb_host + ':' + arcDb_port + '/' + arcDb_database, pool_recycle=3600)
 
 dbConnection = sqlEngine.connect()
 
@@ -188,7 +201,7 @@ finally:
 # In[169]:
 
 
-sqlEngine = create_engine('mysql+pymysql://root:root@127.0.0.1:8889/StudDB 2.0', pool_recycle=3600)
+sqlEngine = create_engine('mysql+pymysql://' + oldDb_username + ':' + oldDb_password + '@' + oldDb_host + ':' + oldDb_port + '/' + oldDb_database, pool_recycle=3600)
 
 dbConnection = sqlEngine.connect()
 

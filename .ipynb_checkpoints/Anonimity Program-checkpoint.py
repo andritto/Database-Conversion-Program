@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 # In[160]:
@@ -129,7 +129,7 @@ LEFT JOIN `course` AS `host_course`
   ON `host_course`.`course_id` = `study_host`.`foreign_course_id`
 
 
-JOIN `exchange_period`
+LEFT JOIN `exchange_period`
   ON `exchange_period`.`period_id` = `application`.`exchange_period_id`
 
 WHERE
@@ -143,10 +143,10 @@ frame = pd.read_sql(query, dbConnection);
 cols = ['student_firstname','student_lastname','abroad_mat_no']
 for col in cols:
     frame[col] = hashCol(frame[col])
-frame['nationality'] = mapCountry(frame['nationality'])    
+frame['nationality'] = mapCountry(frame['nationality'])
 frame['exchange_semester_start'] =  pd.to_datetime(frame['exchange_semester_start'], format='%Y-%m-%d')
 frame['exchange_semester_end'] =  pd.to_datetime(frame['exchange_semester_end'], format='%Y-%m-%d')
-frame['study_time_months'] = ((frame['exchange_semester_end'] - frame['exchange_semester_start'])/np.timedelta64(1, 'M')).astype(int)
+frame['study_time_months'] = (frame['exchange_semester_end'] - frame['exchange_semester_start']).dt.days/30.4
 frame = frame.drop(['exchange_semester_start', 'exchange_semester_end'], axis=1)
 frame.head(10)
 

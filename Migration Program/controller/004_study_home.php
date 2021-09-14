@@ -1,5 +1,5 @@
 <?php
-$applications = Application::where('created_at','>=', (new DateTime())->format('Y-m-d H:i:s'))->get(); //get all data from user table
+$applications = Application::where('created_at','>=', (new DateTime())->format('Y-m-d H:i:s'))->get(); //get all data from application table
 
 foreach ($applications as $application) {
     $studyHomeOld = StudyHomeOld::where('studentid', '=', $application->student_id)->first();

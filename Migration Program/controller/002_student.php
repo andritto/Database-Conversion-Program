@@ -1,5 +1,5 @@
 <?php
-$students = StudentNew::all(); //get all data from user table
+$students = StudentNew::all(); //get all data from student table
 
 foreach ($students as $student) {
     $studentAddress = HomeAddress::where('studentid','=',$student->personalid)->first();
