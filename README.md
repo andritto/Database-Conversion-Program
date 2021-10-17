@@ -75,25 +75,25 @@ variable with the prefix `arcDb_` is the configuration variable for the archive 
 assuming you are running this on Linux or Unix OS, 
 
 ```bash
-./Anonymity\ Program.py
+./Anonimity\ Program.py
 ```
 
 if it does not work, you can run the following command:
 
 ```bash
-python3 "Anonymity Program.py"
+python3 "Anonimity\ Program.py"
 ```
 
 ### How to run the python program (with cron scheduling)
 
 assuming you are running this on Lunix or Unix OS, run the following command:
 ```bash
-crontab-e
+crontab -e
 ```
 
 in the crontab file paste the following cron schedule:
 ```
-0 0 1 */1 * python3 Anonimity Program.py
+0 0 1 */1 * python3 Anonimity\ Program.py
 ```
 
 the schedule will run the program At 00:00 on day-of-month 1 in every month.
